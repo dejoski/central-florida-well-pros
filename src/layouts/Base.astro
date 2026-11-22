@@ -3,13 +3,190 @@ const {title,description,canonicalPath='/',schema=[]}=Astro.props;
 const base='/central-florida-well-pros';
 const canonical=`https://dejoski.github.io${base}${canonicalPath}`;
 const allSchema=[{"@context":"https://schema.org","@type":"LocalBusiness",name:"Central Florida Well Pros",areaServed:["Poinciana, FL","Kissimmee, FL","St. Cloud, FL","Davenport, FL","Haines City, FL","Orlando, FL"],description:"Well repair, well pump replacement and well drilling referrals in Central Florida.",url:canonical},...schema];
+const isPump = canonicalPath==='/' || canonicalPath.includes('pump');
 ---
 <!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>{title}</title><meta name="google-site-verification" content="Yl1hE2g8ab88VS_ZLB6txJ6mMufPpBMz4c52mrTiiw4"/><meta name="description" content={description}/><link rel="canonical" href={canonical}/>
 <meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={canonical}/>
 {allSchema.map(s=><script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 <script src={`${base}/track.js`} defer></script>
-<style>body{font-family:system-ui,Arial,sans-serif;margin:0;color:#12212b;line-height:1.65}header,footer{background:#07304a;color:#fff;padding:1rem}header a,footer a{color:#bfe6ff;margin-right:1rem}main{max-width:980px;margin:auto;padding:1.5rem}h1{line-height:1.15;color:#07304a}.cta{background:#0b6e99;color:#fff;padding:.8rem 1.2rem;border-radius:8px;display:inline-block;text-decoration:none;font-weight:700}.card{background:#eef7fb;padding:1rem;border-radius:10px;margin:1rem 0}input,select,textarea{width:100%;padding:.6rem;margin:.3rem 0 .8rem}button{background:#0b6e99;color:#fff;border:0;padding:.8rem 1.4rem;border-radius:8px;font-weight:700}</style></head>
-<body><header><strong>Central Florida Well Pros</strong><br/><a href={`${base}/`}>Home</a><a href={`${base}/well-pump-replacement/`}>Pump Replacement</a><a href={`${base}/well-repair/`}>Well Repair</a><a href={`${base}/well-drilling/`}>Well Drilling</a><a href={`${base}/get-a-quote/`}>Get a Quote</a></header>
-<main><slot/></main>
-<footer><p>Central Florida Well Pros connects homeowners with licensed local well contractors. Well leads are handled separately — never routed to any sod or irrigation business.</p><p><a href={`${base}/get-a-quote/`}>Request well service</a></p></footer></body></html>
+<style>
+:root{--navy:#062840;--navy2:#041c2e;--ink:#10222e;--muted:#4c6472;--aqua:#0fb5c9;--teal:#0a7d99;--deep-teal:#075e78;--mist:#eaf6f9;--mist2:#f4fafc;--amber:#ffb703;--radius:20px;--shadow:0 18px 40px -18px rgba(4,40,64,.35);--shadow-sm:0 8px 24px -10px rgba(4,40,64,.25)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:"Avenir Next","Segoe UI",system-ui,-apple-system,Arial,sans-serif;margin:0;color:var(--ink);line-height:1.65;background:linear-gradient(180deg,#fff 0%,var(--mist2) 60%,#eef7fa 100%);-webkit-font-smoothing:antialiased}
+a{color:var(--deep-teal)}
+/* ---------- header ---------- */
+.site-header{position:sticky;top:0;z-index:50;background:linear-gradient(90deg,var(--navy2),var(--navy) 55%,#0a3a56);color:#fff;box-shadow:0 4px 20px rgba(4,28,46,.35)}
+.header-in{max-width:1180px;margin:auto;display:flex;align-items:center;gap:1.2rem;padding:.7rem 1.25rem;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:.65rem;text-decoration:none;color:#fff;margin-right:auto}
+.brand-mark{width:44px;height:44px;flex:0 0 44px;border-radius:13px;background:linear-gradient(145deg,var(--aqua),var(--deep-teal));display:grid;place-items:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 6px 14px -6px rgba(15,181,201,.8)}
+.brand-name{font-weight:800;font-size:1.13rem;letter-spacing:-.01em;line-height:1.1}
+.brand-name small{display:block;font-weight:600;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#9fdcea}
+.main-nav{display:flex;gap:.25rem;flex-wrap:wrap}
+.main-nav a{color:#dceef5;text-decoration:none;font-weight:600;font-size:.95rem;padding:.45rem .7rem;border-radius:9px}
+.main-nav a:hover{background:rgba(255,255,255,.12);color:#fff}
+.btn{display:inline-flex;align-items:center;gap:.5rem;border:0;cursor:pointer;text-decoration:none;font-weight:800;border-radius:12px;padding:.85rem 1.5rem;font-size:1rem;line-height:1.2;transition:transform .15s ease,box-shadow .15s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:linear-gradient(135deg,var(--amber),#ff9505);color:#231300;box-shadow:0 12px 24px -10px rgba(255,150,5,.75)}
+.btn-aqua{background:linear-gradient(135deg,var(--aqua),var(--deep-teal));color:#fff;box-shadow:0 12px 24px -10px rgba(10,125,153,.8)}
+.btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1.5px solid rgba(255,255,255,.55)}
+.btn-ghost:hover{background:rgba(255,255,255,.18)}
+.header-cta{padding:.65rem 1.15rem;font-size:.95rem}
+/* ---------- trust bar ---------- */
+.trust-bar{background:#fff;border-bottom:1px solid #dcebf1}
+.trust-in{max-width:1180px;margin:auto;display:flex;gap:.6rem 2rem;flex-wrap:wrap;padding:.6rem 1.25rem;justify-content:center}
+.trust-item{display:inline-flex;align-items:center;gap:.45rem;font-weight:700;font-size:.88rem;color:var(--navy)}
+.trust-item svg{flex:0 0 auto}
+/* ---------- layout / hero ---------- */
+main{max-width:1180px;margin:auto;padding:0 1.25rem 3.5rem}
+.page{display:flex;flex-direction:column;align-items:stretch}
+.page>h1{order:-2}.hero-cta{order:-1}
+.page>p,.page>h2,.page>h3,.page>.card{align-self:stretch}
+#lead-form{align-self:center;width:100%}
+.page>p{max-width:760px;font-size:1.06rem;color:#243b47}
+.page>p:first-of-type{font-size:1.18rem;color:#1b323f}
+.page>h1{position:relative;overflow:hidden;margin:1.6rem 0 1.4rem;padding:clamp(2.2rem,6vw,4rem) clamp(1.4rem,5vw,3.5rem);border-radius:26px;color:#fff;font-size:clamp(2.05rem,5.2vw,3.5rem);line-height:1.08;letter-spacing:-.02em;font-weight:850;background:radial-gradient(1100px 480px at 85% -10%,rgba(15,181,201,.55),transparent 60%),radial-gradient(700px 400px at -10% 110%,rgba(255,183,3,.22),transparent 55%),linear-gradient(130deg,var(--navy2) 0%,var(--navy) 48%,var(--deep-teal) 100%);box-shadow:var(--shadow)}
+.page>h1::after{content:"";position:absolute;inset:auto -40px -70px auto;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(15,181,201,.35) 0%,rgba(15,181,201,0) 65%)}
+.hero-cta{display:flex;gap:.8rem;flex-wrap:wrap;margin:.4rem 0 1.6rem}
+.hero-cta .btn{font-size:1.03rem;padding:.95rem 1.7rem}
+.btn-call{background:#fff;color:var(--navy);border:2px solid var(--navy);box-shadow:var(--shadow-sm)}
+h2{font-size:clamp(1.5rem,3vw,2rem);line-height:1.2;letter-spacing:-.015em;color:var(--navy);margin:2.6rem 0 1rem}
+h3{color:var(--navy);line-height:1.3}
+.page>h3{ background:#fff;border:1px solid #e0edf2;border-left:5px solid var(--aqua);border-radius:14px;padding:1rem 1.2rem .2rem;margin:1.1rem 0 0;box-shadow:var(--shadow-sm)}
+.page>h3+p{background:#fff;border:1px solid #e0edf2;border-top:0;border-left:5px solid var(--aqua);border-radius:0 0 14px 14px;padding:.2rem 1.2rem 1.1rem;margin:0 0 .4rem;color:var(--muted);box-shadow:var(--shadow-sm)}
+/* content cards (existing .card markup) */
+.card{background:#fff;border:1px solid #e0edf2;border-radius:var(--radius);padding:1.6rem 1.8rem;margin:1.6rem 0;box-shadow:var(--shadow-sm)}
+.card h2{margin-top:0}
+.card ul{list-style:none;padding:0;margin:.6rem 0 0;display:grid;gap:.55rem}
+.card li{padding-left:1.7rem;position:relative;font-weight:550}
+.card li::before{content:"";position:absolute;left:0;top:.28em;width:1.05rem;height:1.05rem;border-radius:50%;background:linear-gradient(135deg,var(--aqua),var(--deep-teal))}
+.card li::after{content:"";position:absolute;left:.32rem;top:.52em;width:.42rem;height:.24rem;border-left:2.5px solid #fff;border-bottom:2.5px solid #fff;transform:rotate(-45deg)}
+/* ---------- shared sections ---------- */
+.section{margin:3.2rem 0 0}
+.section-eyebrow{font-size:.75rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin:0 0 .3rem}
+.section>h2{margin-top:0}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.1rem}
+.svc{display:block;background:#fff;border:1px solid #e0edf2;border-radius:var(--radius);padding:1.5rem 1.4rem;text-decoration:none;color:var(--ink);box-shadow:var(--shadow-sm);transition:transform .15s ease,box-shadow .15s ease}
+.svc:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.svc-icon{width:52px;height:52px;border-radius:15px;background:linear-gradient(145deg,var(--mist),#d7eef5);display:grid;place-items:center;margin-bottom:.8rem}
+.svc h3{margin:.1rem 0 .35rem;font-size:1.12rem}
+.svc p{margin:0;color:var(--muted);font-size:.95rem}
+.svc .svc-link{color:var(--deep-teal);font-weight:800;font-size:.9rem}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.1rem;counter-reset:step}
+.step{background:linear-gradient(160deg,var(--navy) ,var(--deep-teal));color:#eaf6fa;border-radius:var(--radius);padding:1.6rem 1.5rem;box-shadow:var(--shadow-sm)}
+.step-num{width:42px;height:42px;border-radius:50%;background:var(--amber);color:#231300;font-weight:850;display:grid;place-items:center;font-size:1.15rem;margin-bottom:.8rem}
+.step h3{color:#fff;margin:.1rem 0 .35rem}
+.step p{margin:0;color:#cfe7ef;font-size:.96rem}
+.why{background:#fff;border:1px solid #e0edf2;border-radius:26px;padding:2rem clamp(1.3rem,4vw,2.4rem);box-shadow:var(--shadow-sm);display:grid;grid-template-columns:1.2fr .8fr;gap:2rem;align-items:center}
+.why h2{margin-top:0}
+.why p{color:var(--muted)}
+.why-badges{display:grid;gap:.7rem}
+.why-badge{display:flex;gap:.6rem;align-items:center;background:var(--mist);border-radius:13px;padding:.75rem 1rem;font-weight:750;color:var(--navy);font-size:.95rem}
+/* ---------- lead form ---------- */
+#lead-form{max-width:680px;margin:2.6rem auto 0;background:#fff;border:1px solid #d9e9ef;border-top:6px solid var(--aqua);border-radius:24px;padding:2rem clamp(1.3rem,4vw,2.2rem);box-shadow:var(--shadow)}
+#lead-form h2{margin:0 0 .4rem;font-size:1.55rem}
+#lead-form h2::after{content:"Free quote · No obligation · Matched to a licensed local well contractor";display:block;font-size:.9rem;font-weight:600;color:var(--muted);margin-top:.35rem;letter-spacing:0;text-transform:none}
+#lead-form label{display:block;font-weight:700;font-size:.92rem;color:var(--navy);margin-top:1rem}
+#lead-form input,#lead-form select,#lead-form textarea{width:100%;padding:.8rem .9rem;margin:.35rem 0 0;border:1.6px solid #c3d8e0;border-radius:12px;font:inherit;font-size:1rem;background:#fbfdff;color:var(--ink)}
+#lead-form input:focus,#lead-form select:focus,#lead-form textarea:focus{outline:3px solid rgba(15,181,201,.35);border-color:var(--teal);background:#fff}
+#lead-form button{width:100%;margin-top:1.4rem;background:linear-gradient(135deg,var(--amber),#ff9505);color:#231300;border:0;padding:1rem 1.4rem;border-radius:13px;font:inherit;font-weight:850;font-size:1.08rem;cursor:pointer;box-shadow:0 14px 26px -12px rgba(255,150,5,.8);transition:transform .15s ease}
+#lead-form button:hover{transform:translateY(-2px)}
+#lead-msg{margin:1rem 0 0;font-weight:650}
+#lead-msg:not(:empty){background:#e7f8ee;border:1px solid #9adbb2;color:#14532d;border-radius:12px;padding:.8rem 1rem}
+/* ---------- footer ---------- */
+.site-footer{background:linear-gradient(180deg,var(--navy),var(--navy2));color:#dceef5;margin-top:1rem}
+.footer-in{max-width:1180px;margin:auto;padding:3rem 1.25rem 2rem;display:grid;grid-template-columns:1.3fr .8fr .9fr;gap:2.2rem}
+.site-footer h4{color:#fff;margin:.1rem 0 .8rem;font-size:1rem;letter-spacing:.02em}
+.site-footer a{color:#a8d4e4;text-decoration:none;display:block;padding:.22rem 0;font-size:.95rem}
+.site-footer a:hover{color:#fff;text-decoration:underline}
+.footer-brand p{color:#a9c6d4;font-size:.95rem;max-width:340px}
+.areas{list-style:none;padding:0;margin:0;columns:2;column-gap:1.5rem;font-size:.95rem;color:#a8d4e4}
+.areas li{padding:.22rem 0;break-inside:avoid}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.14);max-width:1180px;margin:auto;padding:1.2rem 1.25rem 5.2rem;color:#8fb2c2;font-size:.88rem}
+/* ---------- sticky mobile CTA ---------- */
+.mobile-cta{display:none}
+@media (max-width:760px){
+ .main-nav{display:none}
+ .why{grid-template-columns:1fr}
+ .footer-in{grid-template-columns:1fr;gap:1.4rem}
+ .mobile-cta{display:flex;gap:.6rem;position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(4,28,46,.96);padding:.65rem .8rem calc(.65rem + env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(4,28,46,.4)}
+ .mobile-cta a{flex:1;text-align:center;justify-content:center;padding:.85rem .5rem;font-size:.98rem}
+ .page>h1{border-radius:20px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style></head>
+<body class="cfwp-premium-v2">
+<header class="site-header"><div class="header-in">
+<a class="brand" href={`${base}/`} aria-label="Central Florida Well Pros — home">
+<span class="brand-mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2.7c3.2 3.9 6 7.6 6 11a6 6 0 1 1-12 0c0-3.4 2.8-7.1 6-11z" fill="#fff" opacity=".95"/><path d="M9.2 13.8a3 3 0 0 0 2 3.4" stroke="#0a7d99" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+<span class="brand-name">Central Florida Well Pros<small>Well Repair · Pumps · Drilling</small></span></a>
+<nav class="main-nav" aria-label="Main">
+<a href={`${base}/well-pump-replacement/`}>Pump Replacement</a><a href={`${base}/well-repair/`}>Well Repair</a><a href={`${base}/well-drilling/`}>Well Drilling</a><a href={`${base}/orlando-well-services/`}>Service Areas</a>
+</nav>
+<a class="btn btn-primary header-cta" href={`${base}/get-a-quote/`}>Get My Free Well Quote</a>
+</div></header>
+<div class="trust-bar"><div class="trust-in">
+<span class="trust-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#0a7d99"/><path d="M8 12.5l2.6 2.6L16.4 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Licensed &amp; insured contractors</span>
+<span class="trust-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#0a7d99"/><path d="M8 12.5l2.6 2.6L16.4 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Same-week service</span>
+<span class="trust-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#0a7d99"/><path d="M8 12.5l2.6 2.6L16.4 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Free, no-obligation quotes</span>
+<span class="trust-item"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#0a7d99"/><path d="M8 12.5l2.6 2.6L16.4 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Poinciana-based Central Florida coverage</span>
+</div></div>
+<main>
+<div class="page">
+<div class="hero-cta" id="premium-hero">
+<a class="btn btn-aqua" href={`${base}/get-a-quote/`}>Get My Free Well Quote</a>
+<a class="btn btn-call" href={`${base}/get-a-quote/`}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" fill="#0a7d99"/></svg>Request a Call Back</a>
+</div>
+<slot/>
+</div>
+{isPump && (
+<section class="section" aria-label="Well pump replacement cost">
+<p class="section-eyebrow">Cost explainer</p><h2>What a well pump replacement actually costs</h2>
+<div class="svc-grid">
+<div class="svc"><h3>Around $1,900 — typical</h3><p>Most Central Florida homeowners pay around $1,900 for a standard submersible pump replacement: pump, labor, and hookup included.</p></div>
+<div class="svc"><h3>Less — simple jobs</h3><p>Shallower wells, smaller pumps, and jobs where the pressure tank and switch are still healthy can land below the typical price.</p></div>
+<div class="svc"><h3>More — deep or bundled</h3><p>Deep wells, larger pumps, or a tank-and-pump job done together run above it. Your quote should itemize every part before work starts.</p></div>
+</div></section>
+)}
+<section class="section" aria-label="Well services">
+<p class="section-eyebrow">What we do</p><h2>Well services, handled by local pros</h2>
+<div class="svc-grid">
+<a class="svc" href={`${base}/well-pump-replacement/`}><span class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 3c2.8 3.4 5.2 6.6 5.2 9.5a5.2 5.2 0 1 1-10.4 0C6.8 9.6 9.2 6.4 12 3z" stroke="#0a7d99" stroke-width="1.9" stroke-linejoin="round"/><path d="M9.4 13a2.8 2.8 0 0 0 1.8 3" stroke="#0fb5c9" stroke-width="1.9" stroke-linecap="round"/></svg></span><h3>Well Pump Replacement</h3><p>The $1,900 job, quoted straight: pump, labor, and any tank or switch work itemized before work starts.</p><span class="svc-link">Pump costs &amp; signs →</span></a>
+<a class="svc" href={`${base}/well-repair/`}><span class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a4.4 4.4 0 0 1 5.9-4L18 4.9l1.6 1.6 2.6-2.6a4.4 4.4 0 0 1-5.6 5.6L8 18.1a2 2 0 0 1-2.8 0l-1.4-1.4a2 2 0 0 1 0-2.8l8.6-8.6a4.4 4.4 0 0 1 2.3 1z" fill="#0a7d99" transform="scale(.92) translate(1 1)"/></svg></span><h3>Well Repair</h3><p>No water, low pressure, short-cycling, sandy water — diagnosed first, so a $200 switch never becomes a pump job.</p><span class="svc-link">Repair services →</span></a>
+<a class="svc" href={`${base}/well-drilling/`}><span class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2v13" stroke="#0a7d99" stroke-width="2.2" stroke-linecap="round"/><path d="M7 9l5 6 5-6" stroke="#0fb5c9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 21h16" stroke="#0a7d99" stroke-width="2.2" stroke-linecap="round"/><path d="M6 17.5h12" stroke="#9fdcea" stroke-width="2.2" stroke-linecap="round"/></svg></span><h3>Well Drilling</h3><p>New wells and full well replacement, permitted and drilled for Central Florida's sand and water table.</p><span class="svc-link">Drilling &amp; permits →</span></a>
+<a class="svc" href={`${base}/get-a-quote/`}><span class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 13a8 8 0 0 1 16 0" stroke="#0a7d99" stroke-width="2.2" stroke-linecap="round"/><path d="M12 13l4.2-4.2" stroke="#0fb5c9" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="13" r="1.8" fill="#0a7d99"/><path d="M3 20h18" stroke="#0a7d99" stroke-width="2.2" stroke-linecap="round"/></svg></span><h3>No Water / Low Pressure</h3><p>Woke up to dry taps or fading pressure? Mark it urgent on the form and your request goes to the front of the line.</p><span class="svc-link">Get help fast →</span></a>
+</div></section>
+<section class="section" aria-label="How it works">
+<p class="section-eyebrow">How it works</p><h2>Fixed in three steps</h2>
+<div class="steps">
+<div class="step"><span class="step-num">1</span><h3>Request</h3><p>Tell us what your water is doing — no water, low pressure, an aging pump — in one short form. It takes a minute.</p></div>
+<div class="step"><span class="step-num">2</span><h3>Matched</h3><p>We match you with a licensed local well contractor who serves your community, with your symptoms already in hand.</p></div>
+<div class="step"><span class="step-num">3</span><h3>Fixed</h3><p>You get a straight, itemized quote. You pay the contractor only if you hire them — the quote and the matching are free.</p></div>
+</div></section>
+<section class="section why" aria-label="Why Central Florida Well Pros">
+<div><p class="section-eyebrow">Why homeowners use us</p><h2>One call for the whole well, not a guessing game</h2><p>A well is a system — pump, pressure tank, switch, and the well itself. We route your symptoms to a contractor who works on the whole system, so the diagnosis separates a cheap fix from a full pump replacement before you spend real money. Serving the well-dependent communities around Orlando, starting where the demand is proven: Poinciana.</p><a class="btn btn-aqua" href={`${base}/get-a-quote/`}>Get My Free Well Quote</a></div>
+<div class="why-badges">
+<span class="why-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#0a7d99"/><path d="M8 12.5l2.6 2.6L16.4 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Licensed &amp; insured local contractors</span>
+<span class="why-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#0a7d99"/><path d="M8 12.5l2.6 2.6L16.4 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Itemized quotes — pump, labor, parts</span>
+<span class="why-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#0a7d99"/><path d="M8 12.5l2.6 2.6L16.4 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Urgent no-water requests go first</span>
+<span class="why-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#0a7d99"/><path d="M8 12.5l2.6 2.6L16.4 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Free quotes — pay only if you hire</span>
+</div></section>
+</main>
+<footer class="site-footer">
+<div class="footer-in">
+<div class="footer-brand">
+<a class="brand" href={`${base}/`}><span class="brand-mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2.7c3.2 3.9 6 7.6 6 11a6 6 0 1 1-12 0c0-3.4 2.8-7.1 6-11z" fill="#fff" opacity=".95"/><path d="M9.2 13.8a3 3 0 0 0 2 3.4" stroke="#0a7d99" stroke-width="1.8" stroke-linecap="round"/></svg></span><span class="brand-name">Central Florida Well Pros<small>Well Repair · Pumps · Drilling</small></span></a>
+<p>Central Florida Well Pros connects homeowners with licensed local well contractors. Well leads are handled separately — never routed to any sod or irrigation business.</p>
+</div>
+<div><h4>Services</h4>
+<a href={`${base}/well-pump-replacement/`}>Well Pump Replacement</a><a href={`${base}/well-repair/`}>Well Repair</a><a href={`${base}/well-drilling/`}>Well Drilling</a><a href={`${base}/get-a-quote/`}>Get a Free Quote</a>
+</div>
+<div><h4>Service areas</h4>
+<ul class="areas"><li>Poinciana</li><li>Kissimmee</li><li>St. Cloud</li><li>Davenport</li><li>Haines City</li><li>Orlando fringe</li><li>Lake Buena Vista area</li><li>Celebration</li></ul>
+</div>
+</div>
+<div class="footer-bottom">© 2026 Central Florida Well Pros · Well repair, well pump replacement &amp; well drilling referrals across Central Florida · <a style="display:inline;padding:0" href={`${base}/get-a-quote/`}>Request well service</a></div>
+</footer>
+<div class="mobile-cta"><a class="btn btn-primary" href={`${base}/get-a-quote/`}>Get My Free Well Quote</a><a class="btn btn-ghost" href={`${base}/get-a-quote/`}>Request a Call Back</a></div>
+</body></html>
