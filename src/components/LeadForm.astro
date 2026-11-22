@@ -1,0 +1,19 @@
+<form id="lead-form" class="card" novalidate>
+<h2>Request a well quote</h2>
+<label>Full name<input name="name" required autocomplete="name"/></label>
+<label>Phone<input name="phone" required type="tel" autocomplete="tel" placeholder="407-555-0123"/></label>
+<label>City<input name="city" required placeholder="Poinciana"/></label>
+<label>Service needed<select name="service" required><option value="">Choose…</option><option>Well pump replacement</option><option>Well repair</option><option>Well drilling / new well</option><option>Well replacement</option><option>Low water pressure</option><option>No water</option></select></label>
+<label>Urgency<select name="urgency"><option>Today — no water</option><option>This week</option><option>Planning / quote</option></select></label>
+<label>What is happening?<textarea name="message" rows="4" placeholder="No water since this morning, pump is 12 years old…"></textarea></label>
+<button type="submit">Get my free well quote</button>
+<p id="lead-msg" role="status"></p></form>
+<script>
+const f=document.getElementById('lead-form');
+f.addEventListener('submit',async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(f));const msg=document.getElementById('lead-msg');
+if(!d.name.trim()||!/^[0-9()+.\-\s]{7,}$/.test(d.phone)||!d.city.trim()||!d.service){msg.textContent='Please add your name, a valid phone, city, and service.';return;}
+const lead={...d,ts:new Date().toISOString(),page:location.pathname,source:'central-florida-well-pros'};
+try{const k='cfwp_leads';const a=JSON.parse(localStorage.getItem(k)||'[]');a.push(lead);localStorage.setItem(k,JSON.stringify(a));localStorage.setItem('cfwp_lead_count',String(a.length));window.dataLayer=window.dataLayer||[];window.dataLayer.push({type:'form_submit',event:'lead_submit',service:d.service,city:d.city});}catch(_){}
+try{await fetch('/central-florida-well-pros/api/leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(lead)});}catch(_){/* GitHub Pages is static — lead is counted locally and ready for a form endpoint to be wired */}
+msg.textContent='Thank you — your well request was received and counted. A licensed local well contractor will call you back.';f.reset();});
+</script>

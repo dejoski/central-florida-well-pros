@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dejoski.github.io/central-florida-well-pros/sitemap-index.xml

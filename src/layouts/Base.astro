@@ -1,0 +1,15 @@
+---
+const {title,description,canonicalPath='/',schema=[]}=Astro.props;
+const base='/central-florida-well-pros';
+const canonical=`https://dejoski.github.io${base}${canonicalPath}`;
+const allSchema=[{"@context":"https://schema.org","@type":"LocalBusiness",name:"Central Florida Well Pros",areaServed:["Poinciana, FL","Kissimmee, FL","St. Cloud, FL","Davenport, FL","Haines City, FL","Orlando, FL"],description:"Well repair, well pump replacement and well drilling referrals in Central Florida.",url:canonical},...schema];
+---
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>{title}</title><meta name="description" content={description}/><link rel="canonical" href={canonical}/>
+<meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={canonical}/>
+{allSchema.map(s=><script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+<script src={`${base}/track.js`} defer></script>
+<style>body{font-family:system-ui,Arial,sans-serif;margin:0;color:#12212b;line-height:1.65}header,footer{background:#07304a;color:#fff;padding:1rem}header a,footer a{color:#bfe6ff;margin-right:1rem}main{max-width:980px;margin:auto;padding:1.5rem}h1{line-height:1.15;color:#07304a}.cta{background:#0b6e99;color:#fff;padding:.8rem 1.2rem;border-radius:8px;display:inline-block;text-decoration:none;font-weight:700}.card{background:#eef7fb;padding:1rem;border-radius:10px;margin:1rem 0}input,select,textarea{width:100%;padding:.6rem;margin:.3rem 0 .8rem}button{background:#0b6e99;color:#fff;border:0;padding:.8rem 1.4rem;border-radius:8px;font-weight:700}</style></head>
+<body><header><strong>Central Florida Well Pros</strong><br/><a href={`${base}/`}>Home</a><a href={`${base}/well-pump-replacement/`}>Pump Replacement</a><a href={`${base}/well-repair/`}>Well Repair</a><a href={`${base}/well-drilling/`}>Well Drilling</a><a href={`${base}/get-a-quote/`}>Get a Quote</a></header>
+<main><slot/></main>
+<footer><p>Central Florida Well Pros connects homeowners with licensed local well contractors. Well leads are handled separately — never routed to any sod or irrigation business.</p><p><a href={`${base}/get-a-quote/`}>Request well service</a></p></footer></body></html>
