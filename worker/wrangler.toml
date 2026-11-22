@@ -1,0 +1,23 @@
+# Central Florida Well Pros — lead Worker config.
+# Deploy steps: see DEPLOY.md in this folder.
+name = "central-florida-well-pros-leads"
+main = "index.js"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+[vars]
+# Browser origin allowed by CORS (GitHub Pages host for the site).
+ALLOWED_ORIGIN = "https://dejoski.github.io"
+# Later, when a custom domain is live, also set:
+# CUSTOM_DOMAIN_ORIGIN = "https://centralfloridawellpros.com"
+
+# KV: create the namespace first (step 2 in DEPLOY.md):
+#   npx -y wrangler@latest kv namespace create WELL_LEADS
+# Then replace BOTH placeholder ids below with the id it prints.
+[[kv_namespaces]]
+binding = "WELL_LEADS"
+id = "REPLACE_AFTER_KV_CREATE"
+preview_id = "REPLACE_AFTER_KV_CREATE"
+
+# Secret — never put the value in this file. Set it with (step 3 in DEPLOY.md):
+#   npx -y wrangler@latest secret put OWNER_TOKEN

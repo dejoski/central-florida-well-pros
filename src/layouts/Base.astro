@@ -5,7 +5,7 @@ const canonical=`https://dejoski.github.io${base}${canonicalPath}`;
 const allSchema=[{"@context":"https://schema.org","@type":"LocalBusiness",name:"Central Florida Well Pros",areaServed:["Poinciana, FL","Kissimmee, FL","St. Cloud, FL","Davenport, FL","Haines City, FL","Orlando, FL"],description:"Well repair, well pump replacement and well drilling referrals in Central Florida.",url:canonical},...schema];
 ---
 <!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>{title}</title><meta name="description" content={description}/><link rel="canonical" href={canonical}/>
+<title>{title}</title><meta name="google-site-verification" content="Yl1hE2g8ab88VS_ZLB6txJ6mMufPpBMz4c52mrTiiw4"/><meta name="description" content={description}/><link rel="canonical" href={canonical}/>
 <meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={canonical}/>
 {allSchema.map(s=><script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 <script src={`${base}/track.js`} defer></script>
