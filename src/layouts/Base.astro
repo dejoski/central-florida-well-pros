@@ -10,7 +10,7 @@ const isPump = canonicalPath==='/' || canonicalPath.includes('pump');
 <meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={canonical}/>
 {allSchema.map(s=><script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 <script src={`${base}/track.js`} defer></script>
-<style>
+<style is:global>
 :root{--navy:#062840;--navy2:#041c2e;--ink:#10222e;--muted:#4c6472;--aqua:#0fb5c9;--teal:#0a7d99;--deep-teal:#075e78;--mist:#eaf6f9;--mist2:#f4fafc;--amber:#ffb703;--radius:20px;--shadow:0 18px 40px -18px rgba(4,40,64,.35);--shadow-sm:0 8px 24px -10px rgba(4,40,64,.25)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
