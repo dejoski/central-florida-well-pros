@@ -16,8 +16,8 @@ ALLOWED_ORIGIN = "https://dejoski.github.io"
 # Then replace BOTH placeholder ids below with the id it prints.
 [[kv_namespaces]]
 binding = "WELL_LEADS"
-id = "REPLACE_AFTER_KV_CREATE"
-preview_id = "REPLACE_AFTER_KV_CREATE"
+id = "5589d106ef4243e1ab67f1b815eb4538"
+preview_id = "5589d106ef4243e1ab67f1b815eb4538"
 
 # Secret — never put the value in this file. Set it with (step 3 in DEPLOY.md):
 #   npx -y wrangler@latest secret put OWNER_TOKEN

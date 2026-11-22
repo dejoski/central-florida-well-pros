@@ -6,4 +6,4 @@
 // Worker's POST URL, e.g.:
 //   "https://central-florida-well-pros-leads.<account-subdomain>.workers.dev/leads"
 // then rebuild + push. No other file needs to change.
-export const LEAD_ENDPOINT = "";
+export const LEAD_ENDPOINT = "https://central-florida-well-pros-leads.dejanstajic12.workers.dev/leads";
